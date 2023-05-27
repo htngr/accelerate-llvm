@@ -1,5 +1,6 @@
 dist/
 dist-newstyle/
+.direnv
 cabal-dev/
 *.o
 *.hi
@@ -17,3 +18,4 @@ local/
 /stack.yaml.lock
 .ipynb_checkpoints
 /accelerate-llvm-native/accelerate-llvm-native.buildinfo
+.pre-commit-config.yaml
