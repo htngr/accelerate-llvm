@@ -169,8 +169,6 @@ hireWorkersOn caps = do
   workerThreadIds <- forM caps $ \cpu -> do
                        tid <- mask_ $ forkOnWithUnmask cpu $ \restore -> do
                                 tid <- myThreadId
-                                Debug.init_thread
-                                withCString (printf "Thread %d" cpu) Debug.set_thread_name
                                 catch
                                   (restore $ runWorker tid workerActive workerTaskQueue)
                                   (appendMVar workerException . (tid,))

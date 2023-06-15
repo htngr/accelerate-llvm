@@ -43,9 +43,12 @@ main = defaultMainWithHooks simpleUserHooks
                                  _               -> error "accelerate package was not found or is ambiguous"
 
           dyld_library_name  = mkSharedLibName (hostPlatform lbi) (compilerId (compiler lbi)) (installedUnitId accelerate_pkg)
-          [dyld_install_dir] = case Installed.libraryDynDirs accelerate_pkg of
+          dirs = case Installed.libraryDynDirs accelerate_pkg of
                                  [] -> Installed.libraryDirs accelerate_pkg
                                  ds -> ds
+          dyld_install_dir = case dirs of 
+            (d:_) -> d 
+            [] -> error "Empty dyld_install_dir"
 
           buildinfo        = emptyBuildInfo { cppOptions = [ "-DACCELERATE_DYLD_LIBRARY_PATH=" ++ quote (dyld_install_dir </> dyld_library_name) ] }
           hooked_buildinfo = (Just buildinfo, [])
